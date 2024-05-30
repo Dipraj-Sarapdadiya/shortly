@@ -1,7 +1,6 @@
 import { initMongo } from '@/models';
 import UrlModel from '@/models/url-model';
 import { redirect } from 'next/navigation';
-import { URL } from '@/common/types/interface/url-details';
 
 export const GET = async (
   req: Request,
@@ -12,19 +11,18 @@ export const GET = async (
   const entry = await UrlModel.findOne({
     shortId: slug,
   });
-  console.log('entry: ', entry, slug, params);
-  await UrlModel.updateOne(
-    {
-      _id: entry._id,
-    },
-    {
-      $inc: { clicks: +1 },
-    }
-  );
 
   if (entry) {
+    await UrlModel.updateOne(
+      {
+        _id: entry._id,
+      },
+      {
+        $inc: { clicks: +1 },
+      }
+    );
     redirect(entry.originalUrl);
   } else {
-    return new Response().ok;
+    redirect('/not-found');
   }
 };
