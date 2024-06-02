@@ -1,10 +1,9 @@
-import { UrlForm } from '@/components/url-form';
-import { UrlTable } from '@/components/url-table';
+import LandingPage from '@/components/landing-page/landing-page';
 
 export default function Home() {
   return (
-    <main className='py-5 px-20 bg-slate-50 h-screen'>
-      <UrlForm />
+    <main className='no-scrollbar py-5 px-28 overflow-y-scroll'>
+      <LandingPage />
     </main>
   );
 }

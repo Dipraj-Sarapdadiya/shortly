@@ -4,14 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { z } from 'zod';
@@ -29,7 +22,7 @@ const formSchema = z.object({
     .startsWith('https://', 'URL not valid'),
 });
 
-export function UrlForm() {
+export function UrlForm({ formToggle }: { formToggle: boolean }) {
   const router = useRouter();
   const [refreshKey, setRefreshKey] = useState(0);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,15 +59,17 @@ export function UrlForm() {
                 </FormItem>
               )}
             />
-            <Button variant='outline' type='submit'>
+            <Button variant='default' type='submit'>
               Short it
             </Button>
           </form>
         </Form>
       </div>
-      <div className='mt-8'>
-        <UrlTable refreshKey={refreshKey} />
-      </div>
+      {formToggle && (
+        <div className='mt-8'>
+          <UrlTable refreshKey={refreshKey} />
+        </div>
+      )}
     </>
   );
 }
