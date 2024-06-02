@@ -16,8 +16,8 @@ const OfferSection = () => {
           place.
         </p>
       </div>
-      <div className='offer-card flex items-center justify-center gap-x-16 pt-8'>
-        <div className='card-one w-2/6 h-auto border-2 rounded-md border-primary-foreground/40 flex flex-col px-6'>
+      <div className='offer-card flex lg:flex-row flex-col items-center justify-center gap-x-16  gap-y-8 pt-8'>
+        <div className='card-one w-full lg:w-2/6 h-auto border-2 rounded-md border-primary-foreground/40 flex flex-col px-6'>
           <div className='card-title flex gap-x-2 pt-5 justify-center text-xl font-semibold'>
             <Link2 />
             <h3>URL Shortener</h3>
@@ -50,7 +50,7 @@ const OfferSection = () => {
             <Link href='/products/url-shortener'>Learn more</Link>
           </Button>
         </div>
-        <div className='card-two w-2/6 h-auto border-2 rounded-md border-primary-foreground/40 flex flex-col px-6'>
+        <div className='card-two w-full lg:w-2/6 h-auto border-2 rounded-md border-primary-foreground/40 flex flex-col px-6'>
           <div className='card-title flex gap-x-2 pt-5 justify-center text-xl font-semibold'>
             <QrCode />
             <h3>QR Codes</h3>

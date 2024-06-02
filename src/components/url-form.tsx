@@ -45,21 +45,21 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
       <div className='flex'>
         <Form {...form}>
           <form
-            className='flex gap-5 w-full justify-center items-center'
+            className='flex flex-col lg:flex-row gap-2 lg:gap-2 w-full justify-center items-center'
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
               control={form.control}
               name='userUrl'
               render={({ field }) => (
-                <FormItem className='flex-1'>
+                <FormItem className='w-full'>
                   <FormControl>
                     <Input placeholder='Add URL to short' {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <Button variant='default' type='submit'>
+            <Button className='lg:flex-1 w-full' variant='default' type='submit'>
               Short it
             </Button>
           </form>
