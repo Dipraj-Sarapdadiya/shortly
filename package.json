@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prettier:check": "prettier --check \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
@@ -25,6 +27,7 @@
     "mongoose": "^8.4.0",
     "nanoid": "^5.0.7",
     "next": "14.2.3",
+    "prettier": "^3.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",

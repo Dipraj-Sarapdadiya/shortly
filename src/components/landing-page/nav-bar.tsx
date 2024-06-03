@@ -42,8 +42,11 @@ const Navbar = () => {
       {/* Mobile screen nav bar */}
       <nav className='lg:hidden flex justify-between items-center'>
         <div>
-          <span className='sr-only'>Shortly App Name</span>
-          <h1 className='text-4xl font-bold'>Shortly</h1>
+          <Button variant="default" asChild>
+            <Link href="/sign-up" className="text-lg font-semibold">
+              Sign In
+            </Link>
+          </Button>
         </div>
         <div>
           <Sheet>
@@ -73,7 +76,7 @@ const Navbar = () => {
                   >
                     <FolderGit2 />
                   </Link>
-                  <Link href='/https://www.linkedin.com/in/dipraj-sarapdadiya-822973291/' target='_blank'>
+                  <Link href='https://www.linkedin.com/in/dipraj-sarapdadiya-822973291/' target='_blank'>
                     <Linkedin />
                   </Link>
                 </div>
