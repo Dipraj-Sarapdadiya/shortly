@@ -32,7 +32,7 @@ const Footer = () => {
           <Link href="https://github.com/Dipraj-Sarapdadiya/shortly" target="_blank">
             <FolderGit2 />
           </Link>
-          <Link href="/https://www.linkedin.com/in/dipraj-sarapdadiya-822973291/" target="_blank">
+          <Link href="https://www.linkedin.com/in/dipraj-sarapdadiya-822973291/" target="_blank">
             <Linkedin />
           </Link>
         </div>
