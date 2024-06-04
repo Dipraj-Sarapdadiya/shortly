@@ -1,10 +1,10 @@
-'use server';
+"use server";
 
-import { initMongo } from '@/models';
-import UrlModel from '@/models/url-model';
-import { nanoid } from 'nanoid';
-import { revalidatePath } from 'next/cache';
-import { redirect, RedirectType } from 'next/navigation';
+import { initMongo } from "@/models";
+import UrlModel from "@/models/url-model";
+import { nanoid } from "nanoid";
+import { revalidatePath } from "next/cache";
+import { redirect, RedirectType } from "next/navigation";
 
 export const shortUrl = async (url: string) => {
   try {
@@ -17,11 +17,11 @@ export const shortUrl = async (url: string) => {
     });
 
     await shortUrl.save();
-    revalidatePath('/', 'layout');
+    revalidatePath("/", "layout");
     return nanoId;
   } catch (error) {
-    console.error('Failed to short the url: ', error);
-    return 'Something went wrong please try again...';
+    console.error("Failed to short the url: ", error);
+    return "Something went wrong please try again...";
   }
 };
 
@@ -29,10 +29,10 @@ export const fetchAllUrls = async () => {
   try {
     await initMongo();
     const urls = await UrlModel.find();
-    console.log('Fetched urls: ', urls);
+    console.log("Fetched urls: ", urls);
     return JSON.parse(JSON.stringify(urls));
   } catch (error) {
-    console.error('Failed to fetch all urls: ', error);
+    console.error("Failed to fetch all urls: ", error);
   }
 };
 
@@ -43,7 +43,7 @@ export const deleteUrl = async (shortId: string) => {
       shortId: shortId,
     });
   } catch (error) {
-    console.error('Failed to delete url: ', error);
+    console.error("Failed to delete url: ", error);
   }
 };
 
@@ -64,12 +64,12 @@ export const getRedirectUrl = async (slug: string) => {
         },
       );
       // return entry.originalUrl;
-      redirect('/');
+      redirect("/");
     } else {
       return null;
     }
   } catch (error) {
-    console.error('Failed to get the short is from db: ', error);
+    console.error("Failed to get the short is from db: ", error);
     return null;
   }
 };

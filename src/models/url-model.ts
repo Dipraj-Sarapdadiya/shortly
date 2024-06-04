@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const UrlModel = new mongoose.Schema({
   shortId: {
@@ -13,4 +13,4 @@ const UrlModel = new mongoose.Schema({
   clicks: Number,
 });
 
-export default mongoose.models.urls || mongoose.model('urls', UrlModel);
+export default mongoose.models.urls || mongoose.model("urls", UrlModel);
