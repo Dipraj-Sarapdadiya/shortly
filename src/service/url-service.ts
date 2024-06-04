@@ -63,7 +63,7 @@ export const getRedirectUrl = async (slug: string) => {
           $inc: { clicks: +1 },
         },
       );
-      // return entry.originalUrl;
+
       redirect("/");
     } else {
       return null;
