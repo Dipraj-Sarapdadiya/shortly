@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import { z } from 'zod';
-import { shortUrl } from '@/service/url-service';
-import { UrlTable } from './url-table';
+import { z } from "zod";
+import { shortUrl } from "@/service/url-service";
+import { UrlTable } from "./url-table";
 
-import { useEffect, useState } from 'react';
-import { toast } from './ui/use-toast';
+import { useEffect, useState } from "react";
+import { toast } from "./ui/use-toast";
 
 const formSchema = z.object({
-  userUrl: z.string().min(2, 'URL is too short').max(5000).startsWith('https://', 'URL not valid'),
+  userUrl: z.string().min(2, "URL is too short").max(5000).startsWith("https://", "URL not valid"),
 });
 
 export function UrlForm({ formToggle }: { formToggle: boolean }) {
@@ -24,13 +24,13 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userUrl: '',
+      userUrl: "",
     },
   });
 
   async function onSubmit(url: z.infer<typeof formSchema>) {
     const nanoId = await shortUrl(url.userUrl);
-    console.log('form values: ', url, nanoId);
+    console.log("form values: ", url, nanoId);
     setShortId(nanoId);
     form.clearErrors();
     form.reset();
@@ -73,7 +73,7 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
             onClick={async () => {
               await navigator.clipboard.writeText(`${window.location.host}/${shortId}`);
               toast({
-                title: 'URL copied to clipboard',
+                title: "URL copied to clipboard",
               });
             }}
           >

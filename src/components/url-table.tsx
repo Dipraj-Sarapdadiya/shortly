@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { toast } from '@/components/ui/use-toast';
-import { deleteUrl, fetchAllUrls } from '@/service/url-service';
-import { URL } from '@/common/types/interface/url-details';
-import { Button } from '@/components/ui/button';
-import { Copy, Trash } from 'lucide-react';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { toast } from "@/components/ui/use-toast";
+import { deleteUrl, fetchAllUrls } from "@/service/url-service";
+import { URL } from "@/common/types/interface/url-details";
+import { Button } from "@/components/ui/button";
+import { Copy, Trash } from "lucide-react";
 
 export function UrlTable({ refreshKey }: { refreshKey: number }) {
   const [urls, setUrls] = useState<URL[]>();
@@ -39,7 +39,7 @@ export function UrlTable({ refreshKey }: { refreshKey: number }) {
       ) : (
         <Table>
           <TableCaption className="font-semibold">
-            {urls && urls.length > 0 ? 'A list of your urls.' : 'No urls to show'}
+            {urls && urls.length > 0 ? "A list of your urls." : "No urls to show"}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -67,7 +67,7 @@ export function UrlTable({ refreshKey }: { refreshKey: number }) {
                             onClick={async () => {
                               await navigator.clipboard.writeText(`${window.location.host}/${url.shortId}`);
                               toast({
-                                title: 'URL copied to clipboard',
+                                title: "URL copied to clipboard",
                               });
                             }}
                             className="text-gray-700 bg-transparent hover:bg-slate-50"
