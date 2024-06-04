@@ -1,6 +1,6 @@
-import { initMongo } from '@/models';
-import UrlModel from '@/models/url-model';
-import { redirect } from 'next/navigation';
+import { initMongo } from "@/models";
+import UrlModel from "@/models/url-model";
+import { redirect } from "next/navigation";
 
 export const GET = async (req: Request, { params }: { params: { shortId: string } }) => {
   const slug = params.shortId;
@@ -20,6 +20,6 @@ export const GET = async (req: Request, { params }: { params: { shortId: string 
     );
     redirect(entry.originalUrl);
   } else {
-    redirect('/not-found');
+    redirect("/not-found");
   }
 };

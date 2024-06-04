@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button } from '../ui/button';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
-import heroImage from '../../../public/Digital transformation-bro.svg';
+import heroImage from "../../../public/Digital transformation-bro.svg";
 
 const HeroSection = () => {
   return (
@@ -45,21 +45,6 @@ const HeroSection = () => {
           <Button className="w-2/4 mt-10" asChild>
             <Link href="/sign-in">Get started</Link>
           </Button>
-        </div>
-      </section>
-      {/* Mobile screen hero section */}
-      <section className='lg:hidden'>
-        <div className='my-12 flex flex-col items-center space-y-8 text-center'>
-          <h1 className='font-extrabold text-5xl text-primary-600 tracking-wide'>
-            More than just shorter links
-          </h1>
-          <p className='text-xl font-semibold mt-4'>
-            Build your brand&apos;s recognition and get detailed insights on
-            how your links are performing.
-          </p>
-          <Button className='w-2/4 mt-10' asChild>
-              <Link href='/sign-in'>Get started</Link>
-            </Button>
         </div>
       </section>
     </>

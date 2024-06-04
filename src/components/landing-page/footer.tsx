@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { FolderGit2, Github, Linkedin } from 'lucide-react';
+import { FolderGit2, Github, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
