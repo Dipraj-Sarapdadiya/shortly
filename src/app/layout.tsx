@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SessionProviderContext from "@/common/helpers/sessionProviderContext";
 
 const montSerrat = Montserrat({
   subsets: ["latin"],
@@ -23,11 +24,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montSerrat.className}>
-        <SpeedInsights />
-        <Toaster />
-        {children}
-      </body>
+      <SessionProviderContext>
+        <body className={montSerrat.className}>
+          <SpeedInsights />
+          <Toaster />
+          {children}
+        </body>
+      </SessionProviderContext>
     </html>
   );
 }
