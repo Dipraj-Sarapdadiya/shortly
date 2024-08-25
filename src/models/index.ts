@@ -1,41 +1,12 @@
-import mongoose, { Mongoose } from "mongoose";
+"use server";
 
-const MONGO_URL: string | undefined = process.env.MONGO_URL;
+import mongoose from "mongoose";
 
-if (!MONGO_URL) {
-  throw new Error("Please define the MONGO_URL environment variable inside .env.local");
-}
-
-interface MongooseCache {
-  conn: Mongoose | null;
-  promise: Promise<Mongoose> | null;
-}
-
-declare global {
-  var mongoose: MongooseCache | undefined;
-}
-
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-export async function initMongo(): Promise<Mongoose> {
-  if (cached.conn) {
-    return cached.conn;
+export const initMongo = async () => {
+  try {
+    console.log("Mongo URL: ", process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URL!);
+  } catch (error) {
+    console.error("Failed to init Mongo: ", error);
   }
-
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGO_URL as string, opts).then((mongoose) => {
-      return mongoose;
-    });
-  }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
 };
