@@ -5,6 +5,8 @@ import UrlModel from "@/models/url-model";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { redirect, RedirectType } from "next/navigation";
+import { CustomLinkData } from "@/common/types/interface/url-details";
+import { AnyArray } from "mongoose";
 
 export const shortUrl = async (url: string) => {
   try {
@@ -71,5 +73,29 @@ export const getRedirectUrl = async (slug: string) => {
   } catch (error) {
     console.error("Failed to get the short is from db: ", error);
     return null;
+  }
+};
+
+export const addUrl = async (data: CustomLinkData) => {
+  try {
+    await initMongo();
+    if (!data.customShortKey) {
+      data.customShortKey = nanoid(6);
+    }
+
+    const urlData = await UrlModel.create({
+      shortId: data.customShortKey,
+      targetUrl: data.targetUrl,
+      title: data.title,
+    });
+
+
+    const result = await urlData.save();
+    console.log('after save result: ', result);
+    revalidatePath("/", "layout");
+    return data.customShortKey;
+  } catch (error: any) {
+    console.error("Failed to short the url: ", error);
+    throw error;
   }
 };

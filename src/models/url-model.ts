@@ -6,11 +6,25 @@ const UrlModel = new mongoose.Schema({
     require: true,
     unique: true,
   },
-  originalUrl: {
+  targetUrl: {
     type: String,
     require: true,
   },
-  clicks: Number,
+  title: {
+    type: String,
+  },
+  clicks: {
+    type: Number,
+    default: 0,
+  },
+  createdOn: {
+    type: Date,
+    default: new Date(),
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
+  }
 });
 
 export default mongoose.models.urls || mongoose.model("urls", UrlModel);

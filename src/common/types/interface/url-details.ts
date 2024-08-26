@@ -3,3 +3,10 @@ export interface URL {
   originalUrl: string;
   clicks: number;
 }
+
+export interface CustomLinkData {
+  customShortKey?: string;
+  targetUrl: string;
+  title?: string;
+  createdBy?: string;
+}

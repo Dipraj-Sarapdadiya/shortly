@@ -13,7 +13,7 @@ const montSerrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Shortly - Makes sharing easier",
+  title: "ShortnShare - Makes sharing easier",
   description: "A project by Dipraj Sarapdadiya",
 };
 

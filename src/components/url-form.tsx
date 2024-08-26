@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { z } from "zod";
@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
 
 const formSchema = z.object({
-  userUrl: z.string().min(2, "URL is too short").max(5000).startsWith("https://", "URL not valid"),
+  userUrl: z.string().min(2, "URL is too short").max(5000).startsWith("https://", "Invalid URL"),
 });
 
 export function UrlForm({ formToggle }: { formToggle: boolean }) {
@@ -39,13 +39,12 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
 
   return (
     <>
-      {!shortId && (
+      {!shortId && !formToggle && (
         <div className="flex">
           <Form {...form}>
             <form
               className="flex flex-col lg:flex-row gap-2 lg:gap-2 w-full justify-center items-center"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
+              onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="userUrl"
@@ -54,6 +53,7 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
                     <FormControl>
                       <Input placeholder="Add URL to short" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -75,8 +75,7 @@ export function UrlForm({ formToggle }: { formToggle: boolean }) {
               toast({
                 title: "URL copied to clipboard",
               });
-            }}
-          >
+            }}>
             copy
           </Button>
         </div>
