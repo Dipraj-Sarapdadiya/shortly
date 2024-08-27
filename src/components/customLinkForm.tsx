@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +15,8 @@ import { addUrl } from "@/service/url-service";
 import { toast } from "./ui/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+
+import NoSsr from "@/components/NoSsr";
 
 const formSchema = z.object({
   targetUrl: z.string().min(6, "URL is too short").max(5000).startsWith("https://", "Invalid URL"),
@@ -42,6 +46,7 @@ const formSchema = z.object({
 
 export function CustomLinkForm() {
   const [processing, setProcessing] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +64,7 @@ export function CustomLinkForm() {
       form.reset();
       form.clearErrors();
       setProcessing(false);
-      window.location.href = `/dashboard/links/${shortId}`;
+      router.push(`/dashboard/links/${shortId}`);
     } catch (error: any) {
       const errString = JSON.stringify(error.message);
       if (errString.includes("E11000")) {
@@ -119,22 +124,24 @@ export function CustomLinkForm() {
               <Label className="text-lg" htmlFor="customShortKey">
                 Custom short key (optional)
               </Label>
-              <FormField
-                control={form.control}
-                name="customShortKey"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <div className="flex gap-x-3 justify-center items-center">
-                        <Input value={window.location.host} disabled />
-                        <span className="text-xl"> / </span>
-                        <Input placeholder="Add your short key" {...field} />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <NoSsr>
+                <FormField
+                  control={form.control}
+                  name="customShortKey"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <div className="flex gap-x-3 justify-center items-center">
+                          <Input value={window.location.host} disabled />
+                          <span className="text-xl"> / </span>
+                          <Input placeholder="Add your short key" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </NoSsr>
             </div>
             {processing ? (
               <Button disabled>
