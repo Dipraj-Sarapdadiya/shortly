@@ -57,29 +57,26 @@ export function CustomLinkForm() {
   });
 
   async function onSubmit(urlData: z.infer<typeof formSchema>) {
-    console.log("user url details: ", urlData);
-    try {
       setProcessing(true);
-      const shortId = await addUrl(urlData);
-      form.reset();
-      form.clearErrors();
-      setProcessing(false);
-      router.push(`/dashboard/links/${shortId}`);
-    } catch (error: any) {
-      console.log('string err message: ', error);
-      if (error.message.includes("link already exists")) {
+      const result = await addUrl(urlData);
+      if (result.status === 409) {
         form.setError("customShortKey", {
-          message: "This exact link already exists and cannot be duplicated. Change the short key and try again",
+          message: result.error,
         });
-      } else {
+        setProcessing(false);
+      } else if (result.status === 500) {
         toast({
           title: "Oops... Something went wrong",
           description: "Not able to craft url. Please try after some times",
           variant: "destructive",
         });
+        setProcessing(false);
+      } else if (result.shortKey) {
+        form.reset();
+        form.clearErrors();
+        setProcessing(false);
+        router.push(`/dashboard/links/${result.shortKey}`);
       }
-      setProcessing(false);
-    }
   }
 
   return (

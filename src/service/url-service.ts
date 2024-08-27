@@ -89,17 +89,24 @@ export const addUrl = async (data: CustomLinkData) => {
       title: data.title,
     });
 
-
     const result = await urlData.save();
-    console.log('after save result: ', result);
-    revalidatePath("/", "layout");
-    return data.customShortKey;
+    return { status: 200, message: "success", shortKey: data.customShortKey };
   } catch (error: any) {
     if (error.code === 11000) {
-      throw new Error("This exact link already exists and cannot be duplicated. Change the short key and try again");
+      return {
+        status: 409,
+        message: "Failed",
+        error: "This exact link already exists and cannot be duplicated. Change the short key and try again",
+        shortKey: null,
+      };
     } else {
-      console.error("Server Error:", error);
-      throw new Error("Unable to create short link");
+      console.log("server error while storing short url: ", error);
+      return {
+        status: 500,
+        message: "Failed",
+        error: "Internal server error, kindly check logs to know more",
+        shortKey: null,
+      };
     }
   }
 };
