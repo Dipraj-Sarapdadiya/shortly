@@ -66,9 +66,8 @@ export function CustomLinkForm() {
       setProcessing(false);
       router.push(`/dashboard/links/${shortId}`);
     } catch (error: any) {
-      const errString = JSON.stringify(error.message);
-      console.log('string err message: ', errString);
-      if (errString.includes("duplicate key")) {
+      console.log('string err message: ', error);
+      if (error.message.includes("link already exists")) {
         form.setError("customShortKey", {
           message: "This exact link already exists and cannot be duplicated. Change the short key and try again",
         });

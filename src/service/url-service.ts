@@ -95,7 +95,11 @@ export const addUrl = async (data: CustomLinkData) => {
     revalidatePath("/", "layout");
     return data.customShortKey;
   } catch (error: any) {
-    console.error("Failed to short the url: ", error);
-    throw error;
+    if (error.code === 11000) {
+      throw new Error("This exact link already exists and cannot be duplicated. Change the short key and try again");
+    } else {
+      console.error("Server Error:", error);
+      throw new Error("Unable to create short link");
+    }
   }
 };
