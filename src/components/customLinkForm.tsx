@@ -67,7 +67,8 @@ export function CustomLinkForm() {
       router.push(`/dashboard/links/${shortId}`);
     } catch (error: any) {
       const errString = JSON.stringify(error.message);
-      if (errString.includes("E11000")) {
+      console.log('string err message: ', errString);
+      if (errString.includes("duplicate key")) {
         form.setError("customShortKey", {
           message: "This exact link already exists and cannot be duplicated. Change the short key and try again",
         });
@@ -78,6 +79,7 @@ export function CustomLinkForm() {
           variant: "destructive",
         });
       }
+      setProcessing(false);
     }
   }
 
