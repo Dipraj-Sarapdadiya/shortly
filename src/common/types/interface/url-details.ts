@@ -1,24 +1,24 @@
 import { ObjectId } from "mongoose";
-import { UserDetails } from './user-details';
+import { IUserDetails } from "./user-details";
 
-export interface URL {
+export interface IURL {
   shortId: string;
   originalUrl: string;
   clicks: number;
 }
 
-export interface CustomLinkData {
+export interface ICustomLinkData {
   customShortKey?: string;
   targetUrl: string;
   title?: string;
 }
 
-export interface UrlDetails {
+export interface IUrlDetails {
   _id: ObjectId;
   shortId: string;
   targetUrl: string;
   title: string;
   clicks: number;
   createdOn: Date;
-  createdBy: UserDetails;
+  createdBy: IUserDetails;
 }

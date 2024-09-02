@@ -6,9 +6,9 @@ import UserModel from "@/models/user-model";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { redirect, RedirectType } from "next/navigation";
-import { CustomLinkData } from "@/common/types/interface/url-details";
+import { ICustomLinkData } from "@/common/types/interface/url-details";
 import mongoose, { ObjectId } from "mongoose";
-import { UrlDetails } from '@/common/types/interface/url-details';
+import { IUrlDetails } from "@/common/types/interface/url-details";
 
 export const shortUrl = async (url: string) => {
   try {
@@ -78,7 +78,7 @@ export const getRedirectUrl = async (slug: string) => {
   }
 };
 
-export const addUrl = async (data: CustomLinkData, userId: string) => {
+export const addUrl = async (data: ICustomLinkData, userId: string) => {
   try {
     await initMongo();
     if (!data.customShortKey) {
@@ -129,7 +129,7 @@ export const fetchLinkDetailByShortKey = async (shortKey: string, userEmail: str
   try {
     await initMongo();
 
-    const details: UrlDetails = await UrlModel.findOne({ shortId: shortKey }).populate({
+    const details: IUrlDetails = await UrlModel.findOne({ shortId: shortKey }).populate({
       path: "createdBy",
       model: "users",
     });
@@ -137,12 +137,11 @@ export const fetchLinkDetailByShortKey = async (shortKey: string, userEmail: str
     if (details.createdBy.email !== userEmail) {
       return {
         status: 403,
-        message: 'Forbidden',
-        urlDetails: null
-      }
+        message: "Forbidden",
+        urlDetails: null,
+      };
     }
 
-    console.log('found url details: ', details);
 
     return {
       status: 200,

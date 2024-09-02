@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
+import { ObjectId } from "mongoose";
 
-export interface UserDetails {
+export interface IUserDetails {
   _id: ObjectId;
   email: string;
   password: string;
@@ -8,7 +8,7 @@ export interface UserDetails {
   urls?: ObjectId[];
 }
 
-export interface SessionUserDetails {
+export interface ISessionUserDetails {
   id: string;
   email: string;
 }

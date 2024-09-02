@@ -7,23 +7,23 @@ import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { fetchLinkDetailByShortKey } from "@/service/url-service";
-import { UrlDetails } from "@/common/types/interface/url-details";
-import { SessionUserDetails } from "@/common/types/interface/user-details";
+import { IUrlDetails } from "@/common/types/interface/url-details";
+import { ISessionUserDetails } from "@/common/types/interface/user-details";
 import { Input } from "../ui/input";
 import Link from "next/link";
 
 const UrlDetails = ({ shortKey }: { shortKey: string }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [urlDetails, setUrlDetails] = useState<UrlDetails | null>(null);
-  const [userDetails, setUserDetails] = useState<SessionUserDetails>();
+  const [urlDetails, setUrlDetails] = useState<IUrlDetails | null>(null);
+  const [userDetails, setUserDetails] = useState<ISessionUserDetails>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
       console.log("setting user details: ", session.user);
-      setUserDetails(session.user as SessionUserDetails);
+      setUserDetails(session.user as ISessionUserDetails);
     } else if (status === "unauthenticated") {
       router.push("/sign-in");
     }
@@ -69,12 +69,16 @@ const UrlDetails = ({ shortKey }: { shortKey: string }) => {
           <CardContent>
             <div className="flex items-center justify-start gap-x-7">
               <label>Short Link: </label>
-              <Link target="_blank" className="hover:underline"
+              <Link
+                target="_blank"
+                className="hover:underline"
                 href={`${window.location.host}/${urlDetails.shortId}`}>{`${window.location.host}/${urlDetails.shortId}`}</Link>
             </div>
             <div className="flex items-center justify-start gap-x-5">
               <label>Target Link: </label>
-              <Link target="blank" className="hover:underline"
+              <Link
+                target="blank"
+                className="hover:underline"
                 href={`${urlDetails.targetUrl}`}>{`${urlDetails.targetUrl}`}</Link>
             </div>
           </CardContent>

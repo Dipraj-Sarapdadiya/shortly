@@ -7,12 +7,12 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/use-toast";
 import { deleteUrl, fetchAllUrls } from "@/service/url-service";
-import { URL } from "@/common/types/interface/url-details";
+import { IURL } from "@/common/types/interface/url-details";
 import { Button } from "@/components/ui/button";
 import { Copy, Trash } from "lucide-react";
 
 export function UrlTable({ refreshKey }: { refreshKey: number }) {
-  const [urls, setUrls] = useState<URL[]>();
+  const [urls, setUrls] = useState<IURL[]>();
   const [deleting, setDeleting] = useState<boolean>();
 
   const deleteHandler = (shortId: string) => {
@@ -70,8 +70,7 @@ export function UrlTable({ refreshKey }: { refreshKey: number }) {
                                 title: "URL copied to clipboard",
                               });
                             }}
-                            className="text-gray-700 bg-transparent hover:bg-slate-50"
-                          >
+                            className="text-gray-700 bg-transparent hover:bg-slate-50">
                             <Copy />
                           </Button>
                         </TooltipTrigger>
@@ -84,8 +83,7 @@ export function UrlTable({ refreshKey }: { refreshKey: number }) {
                   <TableCell>
                     <Button
                       onClick={() => deleteHandler(url.shortId)}
-                      className="text-gray-700 bg-transparent hover:bg-slate-50"
-                    >
+                      className="text-gray-700 bg-transparent hover:bg-slate-50">
                       <Trash />
                     </Button>
                   </TableCell>
