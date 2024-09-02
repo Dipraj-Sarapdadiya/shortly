@@ -7,7 +7,7 @@ import { Icons } from "@/components/icons";
 import { IndianRupee } from "lucide-react";
 import { activities } from "@/constants/data";
 
-export default function page() {
+export default function Dashboard() {
   return (
     <PageContainer scrollable={true}>
       <div className="space-y-2">

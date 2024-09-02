@@ -14,7 +14,7 @@ const breadcrumbItems = [
   { title: "Links", link: "/dashboard/links" },
 ];
 
-export default function page() {
+export default function Links() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
