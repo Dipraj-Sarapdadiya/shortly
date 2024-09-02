@@ -2,11 +2,13 @@
 
 import { initMongo } from "@/models";
 import UrlModel from "@/models/url-model";
+import UserModel from "@/models/user-model";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { redirect, RedirectType } from "next/navigation";
 import { CustomLinkData } from "@/common/types/interface/url-details";
-import { AnyArray } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { UrlDetails } from '@/common/types/interface/url-details';
 
 export const shortUrl = async (url: string) => {
   try {
@@ -76,7 +78,7 @@ export const getRedirectUrl = async (slug: string) => {
   }
 };
 
-export const addUrl = async (data: CustomLinkData) => {
+export const addUrl = async (data: CustomLinkData, userId: string) => {
   try {
     await initMongo();
     if (!data.customShortKey) {
@@ -87,9 +89,21 @@ export const addUrl = async (data: CustomLinkData) => {
       shortId: data.customShortKey,
       targetUrl: data.targetUrl,
       title: data.title,
+      createdBy: new mongoose.Types.ObjectId(userId),
     });
 
-    const result = await urlData.save();
+    const urlId = await urlData.save();
+
+    const result = await UserModel.updateOne(
+      {
+        _id: new mongoose.Types.ObjectId(userId),
+      },
+      {
+        $push: {
+          urls: urlId._id,
+        },
+      },
+    );
     return { status: 200, message: "success", shortKey: data.customShortKey };
   } catch (error: any) {
     if (error.code === 11000) {
@@ -108,5 +122,34 @@ export const addUrl = async (data: CustomLinkData) => {
         shortKey: null,
       };
     }
+  }
+};
+
+export const fetchLinkDetailByShortKey = async (shortKey: string, userEmail: string) => {
+  try {
+    await initMongo();
+
+    const details: UrlDetails = await UrlModel.findOne({ shortId: shortKey }).populate({
+      path: "createdBy",
+      model: "users",
+    });
+
+    if (details.createdBy.email !== userEmail) {
+      return {
+        status: 403,
+        message: 'Forbidden',
+        urlDetails: null
+      }
+    }
+
+    console.log('found url details: ', details);
+
+    return {
+      status: 200,
+      message: "success",
+      urlDetails: JSON.stringify(details),
+    };
+  } catch (error) {
+    console.error("Failed to fetch url details by short key: ", error);
   }
 };

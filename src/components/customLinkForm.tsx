@@ -44,7 +44,7 @@ const formSchema = z.object({
     }, "Short key must be 6 char long"),
 });
 
-export function CustomLinkForm() {
+export function CustomLinkForm({ userId }: { userId: string }) {
   const [processing, setProcessing] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,26 +57,26 @@ export function CustomLinkForm() {
   });
 
   async function onSubmit(urlData: z.infer<typeof formSchema>) {
-      setProcessing(true);
-      const result = await addUrl(urlData);
-      if (result.status === 409) {
-        form.setError("customShortKey", {
-          message: result.error,
-        });
-        setProcessing(false);
-      } else if (result.status === 500) {
-        toast({
-          title: "Oops... Something went wrong",
-          description: "Not able to craft url. Please try after some times",
-          variant: "destructive",
-        });
-        setProcessing(false);
-      } else if (result.shortKey) {
-        form.reset();
-        form.clearErrors();
-        setProcessing(false);
-        router.push(`/dashboard/links/${result.shortKey}`);
-      }
+    setProcessing(true);
+    const result = await addUrl(urlData, userId);
+    if (result.status === 409) {
+      form.setError("customShortKey", {
+        message: result.error,
+      });
+      setProcessing(false);
+    } else if (result.status === 500) {
+      toast({
+        title: "Oops... Something went wrong",
+        description: "Not able to craft url. Please try after some times",
+        variant: "destructive",
+      });
+      setProcessing(false);
+    } else if (result.shortKey) {
+      form.reset();
+      form.clearErrors();
+      setProcessing(false);
+      router.push(`/dashboard/links/${result.shortKey}`);
+    }
   }
 
   return (

@@ -17,6 +17,10 @@ const UserModel = new Schema({
     type: Boolean,
     default: false,
   },
+  urls: [{
+    type: Schema.Types.ObjectId,
+    ref: 'urls'
+  }],
   forgotPasswordToken: String,
   verifyToken: String,
   verifyTokenExpiry: Date,
