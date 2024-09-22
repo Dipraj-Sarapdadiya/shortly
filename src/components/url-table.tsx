@@ -58,7 +58,7 @@ export function UrlTable({ refreshKey }: { refreshKey: number }) {
                   <TableCell>
                     <Link href={url.shortId}>{url.shortId}</Link>
                   </TableCell>
-                  <TableCell>{url.clicks}</TableCell>
+                  <TableCell>{url.clicks.length}</TableCell>
                   <TableCell>
                     <TooltipProvider>
                       <Tooltip>

@@ -1,18 +1,68 @@
+'use client';
+
 import PageContainer from "@/components/layout/page-container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserClient } from "@/components/tables/user-tables/client";
 import { Icons } from "@/components/icons";
-import { IndianRupee } from "lucide-react";
-import { activities } from "@/constants/data";
+import { IndianRupee, Loader2, Plus } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { useSession } from "next-auth/react";
+import { IUrlDetails } from "@/common/types/interface/url-details";
+import { ISessionUserDetails } from "@/common/types/interface/user-details";
+import { fetchLinkDetailByUserId } from "@/service/url-service";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const [urls, setUrls] = useState<IUrlDetails[] | []>([]);
+  const [userDetails, setUserDetails] = useState<ISessionUserDetails>();
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      setUserDetails(session.user as ISessionUserDetails);
+    } else if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [router, status]);
+
+  const fetchUrls = async () => {
+    if (userDetails) {
+      setLoading(true);
+      try {
+        const res = await fetchLinkDetailByUserId(userDetails.id);
+        setUrls(JSON.parse(res.urls));
+      } catch (err) {
+        console.log("Failed to fetch URLs.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUrls();
+  }, [userDetails]);
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="h-full w-full flex justify-center items-center">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <PageContainer scrollable={true}>
       <div className="space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">Hi, Welcome back 👋</h2>
+          <Button className="text-xs md:text-sm" onClick={() => router.push(`/dashboard/links/add`)}>
+            <Plus className="mr-2 h-4 w-4" /> Add New
+          </Button>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
@@ -27,8 +77,8 @@ export default function Dashboard() {
                   <Icons.link className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">28</div>
-                  <p className="text-xs text-muted-foreground">22 remaining with basic plan</p>
+                  <div className="text-2xl font-bold">{urls.length}</div>
+                  <p className="text-xs text-muted-foreground">{500 - urls.length} remaining with basic plan</p>
                 </CardContent>
               </Card>
               <Card>
@@ -37,8 +87,8 @@ export default function Dashboard() {
                   <Icons.qrCode className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">15</div>
-                  <p className="text-xs text-muted-foreground">35 remaining with basic plan</p>
+                  <div className="text-2xl font-bold">0</div>
+                  <p className="text-xs text-muted-foreground">100 remaining with basic plan</p>
                 </CardContent>
               </Card>
               <Card>
@@ -47,20 +97,22 @@ export default function Dashboard() {
                   <Icons.trendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+12,234</div>
+                  <div className="text-2xl font-bold">{urls.reduce((acc, curr) => acc + curr.clicks.length, 0)}</div>
                   <p className="text-xs text-muted-foreground">+19% from last month</p>
                 </CardContent>
               </Card>
             </div>
-            <div className="h-auto">
-              <Card className="col-span-4 md:col-span-3">
-                <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <UserClient data={activities} />
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+              <div className="col-span-1 md:col-span-2 lg:col-span-7">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm md:text-lg font-medium">Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <UserClient data={urls} refreshUrls={fetchUrls} />
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </TabsContent>
           <TabsContent value="analytics" className="space-y-4">

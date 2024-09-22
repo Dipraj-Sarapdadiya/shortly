@@ -44,7 +44,7 @@ const formSchema = z.object({
     }, "Short key must be 6 char long"),
 });
 
-export function CustomLinkForm({ userId }: { userId: string }) {
+export function CreateLinkForm({ userId }: { userId: string }) {
   const [processing, setProcessing] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({

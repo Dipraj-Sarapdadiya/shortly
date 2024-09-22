@@ -22,23 +22,21 @@ export const authOptions: NextAuthConfig = {
           const userDetail = await getUserDetailByEmail(credentials.email.toString());
           console.log("user details in auth: ", userDetail);
 
-          // If user does not exist, return null
           if (!userDetail) {
             return null;
           }
 
-          // Compare the provided password with the hashed password stored in the database
           const isPasswordCorrect = await bcrypt.compare(credentials.password.toString(), userDetail.password);
           console.log("isPasswordCorrect: ", isPasswordCorrect);
           if (!isPasswordCorrect) {
             return null;
           }
 
-          // If authentication succeeds, return the user object
           return {
             id: userDetail._id.toString(),
             email: userDetail.email,
             isVerified: userDetail.isVerified,
+            name: `${userDetail.firstName} ${userDetail.lastName}`,
           };
         } catch (error: any) {
           console.error("Error during authentication", error);
@@ -67,7 +65,7 @@ export const authOptions: NextAuthConfig = {
       return session;
     },
   },
-  session: { strategy: "jwt", maxAge: 60 * 60 * 1 },
+  session: { strategy: "jwt", maxAge: 60 * 60 * 8 },
   secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/sign-in",

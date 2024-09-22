@@ -6,7 +6,7 @@ import UserModel from "@/models/user-model";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { redirect, RedirectType } from "next/navigation";
-import { ICustomLinkData } from "@/common/types/interface/url-details";
+import { ILinkData } from "@/common/types/interface/url-details";
 import mongoose, { ObjectId } from "mongoose";
 import { IUrlDetails } from "@/common/types/interface/url-details";
 
@@ -17,7 +17,7 @@ export const shortUrl = async (url: string) => {
     const shortUrl = await UrlModel.create({
       shortId: nanoId,
       originalUrl: url,
-      clicks: 0,
+      clicks: [],
     });
 
     await shortUrl.save();
@@ -78,7 +78,7 @@ export const getRedirectUrl = async (slug: string) => {
   }
 };
 
-export const addUrl = async (data: ICustomLinkData, userId: string) => {
+export const addUrl = async (data: ILinkData, userId: string) => {
   try {
     await initMongo();
     if (!data.customShortKey) {
@@ -88,8 +88,8 @@ export const addUrl = async (data: ICustomLinkData, userId: string) => {
     const urlData = await UrlModel.create({
       shortId: data.customShortKey,
       targetUrl: data.targetUrl,
-      title: data.title,
       createdBy: new mongoose.Types.ObjectId(userId),
+      ...(data.title && { title: data.title }),
     });
 
     const urlId = await urlData.save();
@@ -142,7 +142,6 @@ export const fetchLinkDetailByShortKey = async (shortKey: string, userEmail: str
       };
     }
 
-
     return {
       status: 200,
       message: "success",
@@ -150,5 +149,72 @@ export const fetchLinkDetailByShortKey = async (shortKey: string, userEmail: str
     };
   } catch (error) {
     console.error("Failed to fetch url details by short key: ", error);
+  }
+};
+
+export const fetchLinkDetailByUserId = async (userId: string, recent?: boolean) => {
+  try {
+    await initMongo();
+
+    let details: IUrlDetails[];
+    if (recent) {
+      details = await UrlModel.find({ createdBy: userId }).limit(10).sort({ createdOn: -1 });
+    } else {
+      details = await UrlModel.find({ createdBy: userId }).sort({ createdOn: -1 });
+    }
+
+    return {
+      status: 200,
+      message: "success",
+      urls: JSON.stringify(details),
+    };
+  } catch (error) {
+    console.error("Failed to fetch urls by user id: ", error);
+    return {
+      status: 500,
+      message: "Failed",
+      urls: "[]",
+    };
+  }
+};
+
+export const updateUrl = async (data: ILinkData, shortId: string) => {
+  try {
+    await initMongo();
+    if (!data.customShortKey) {
+      data.customShortKey = nanoid(6);
+    }
+
+    await UrlModel.updateOne(
+      {
+        shortId: shortId,
+      },
+      {
+        shortId: data.customShortKey,
+        targetUrl: data.targetUrl,
+        updatedOn: new Date(),
+        title: data.title,
+        status: data.status,
+      },
+    );
+
+    return { status: 200, message: "success", shortKey: data.customShortKey };
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return {
+        status: 409,
+        message: "Failed",
+        error: "This exact link already exists and cannot be duplicated. Change the short key and try again",
+        shortKey: null,
+      };
+    } else {
+      console.log("server error while storing short url: ", error);
+      return {
+        status: 500,
+        message: "Failed",
+        error: "Internal server error, kindly check logs to know more",
+        shortKey: null,
+      };
+    }
   }
 };

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,21 +38,36 @@ const SignUp = () => {
 
   async function onSubmit(userDetails: z.infer<typeof formSchema>) {
     setSubmit(true);
-    const result = await axios.post("/api/users/singup", userDetails);
-    if (result.status === 201) {
-      toast({
-        variant: "success",
-        description: "Welcome onboard!",
-      });
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(1);
-        }, 3000);
-      })
-      window.location.href = '/sign-in';
+    try {
+      const result = await axios.post("/api/users/signup", userDetails);
+      if (result.status === 201) {
+        toast({
+          variant: "success",
+          description: "Welcome onboard!",
+        });
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(1);
+          }, 3000);
+        });
+        window.location.href = "/sign-in";
+      }
+      form.reset();
+      setSubmit(false);
+    } catch (error: any) {
+      setSubmit(false);
+      if (error.status === 400) {
+        toast({
+          variant: "destructive",
+          description: "User already exist",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          description: "Something went wrong please try again after some time",
+        });
+      }
     }
-    form.reset();
-    setSubmit(false);
   }
 
   return (

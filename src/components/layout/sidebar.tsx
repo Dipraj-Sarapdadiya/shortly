@@ -27,7 +27,7 @@ export default function Sidebar({ className }: SidebarProps) {
         className,
       )}>
       <div className="hidden p-5 pt-10 lg:block">
-        <Link href={"https://github.com/Kiranism/next-shadcn-dashboard-starter"} target="_blank">
+        <Link href={"/dashboard/"}>
           {isMinimized ? (
             <Icons.logo className="mr-2 h-6 w-6" />
           ) : (

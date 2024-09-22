@@ -1,6 +1,13 @@
 "use client";
 
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "./input";
@@ -11,27 +18,29 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey?: string;
+  pagination?: boolean;
+  refreshUrls?: () => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, searchKey, pagination }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
-
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
 
   return (
     <>
-      {searchKey && <Input
-        placeholder={`Search ${searchKey}...`}
-        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-        onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
-        className="w-full md:max-w-sm"
-      />}
+      {searchKey && (
+        <Input
+          placeholder={`Search ${searchKey}...`}
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
+          className="w-full md:max-w-sm mb-3 mt-0"
+        />
+      )}
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border md:h-[calc(80dvh-200px)]">
         <Table className="relative">
           <TableHeader>
@@ -68,11 +77,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTable
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {searchKey && <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
-        </div>}
-        {/* <div className="space-x-2">
+        {pagination && <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
@@ -83,7 +88,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTable
           <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             Next
           </Button>
-        </div> */}
+        </div>}
       </div>
     </>
   );

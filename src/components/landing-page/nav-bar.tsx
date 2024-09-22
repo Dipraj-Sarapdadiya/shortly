@@ -46,8 +46,8 @@ const Navbar = () => {
               <div className="flex justify-between h-full items-center flex-col gap-5 text-xl font-semibold pt-8">
                 <div className="flex justify-center flex-col gap-5 text-xl font-semibold">
                   <Link href="/">Home</Link>
-                  <Link href="/features">Features</Link>
-                  <Link href="/about-us">About Us</Link>
+                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/sign-up">Sign up</Link>
                 </div>
                 <div className="flex space-x-8">
                   <Link href="https://github.com/Dipraj-Sarapdadiya" target="_blank">

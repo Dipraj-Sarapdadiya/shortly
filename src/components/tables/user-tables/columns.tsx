@@ -1,47 +1,38 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { Activities } from "@/constants/data";
-import { Checkbox } from "@/components/ui/checkbox";
+import { IUrlDetails } from "@/common/types/interface/url-details";
 
-export const columns: ColumnDef<Activities>[] = [
-  {
-    id: "select",
-    // header: ({ table }) => (
-    //   <Checkbox
-    //     checked={table.getIsAllPageRowsSelected()}
-    //     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //     aria-label="Select all"
-    //   />
-    // ),
-    // cell: ({ row }) => (
-    //   <Checkbox
-    //     checked={row.getIsSelected()}
-    //     onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //     aria-label="Select row"
-    //   />
-    // ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "title",
-    header: "TITLE",
-  },
-  {
-    accessorKey: "shortKey",
-    header: "SHORT KEY",
-  },
-  {
-    accessorKey: "engagements",
-    header: "ENGAGEMENTS",
-  },
-  {
-    accessorKey: "status",
-    header: "STATUS",
-  },
-  {
-    id: "copy",
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
-];
+export function getColumns(refreshUrls: () => void): ColumnDef<IUrlDetails>[] {
+  return [
+    {
+      id: "select",
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "title",
+      header: "TITLE",
+    },
+    {
+      accessorKey: "shortId",
+      header: "SHORT KEY",
+    },
+    {
+      accessorKey: "clicks",
+      header: "ENGAGEMENTS",
+      cell: ({ row }) => {
+        const clicksArray = row.original.clicks;
+        return clicksArray ? clicksArray.length : 0;
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "STATUS",
+    },
+    {
+      id: "copy",
+      cell: ({ row }) => <CellAction data={row.original} refreshUrls={refreshUrls} />,
+    },
+  ];
+}
