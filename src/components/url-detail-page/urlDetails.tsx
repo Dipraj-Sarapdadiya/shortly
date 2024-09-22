@@ -111,7 +111,7 @@ const UrlDetails = ({ shortKey }: { shortKey: string }) => {
             <Separator className="my-4" />
             <div className="flex items-center justify-start gap-x-2 text-xs">
               <CalendarClock className="h-4 w-4" />
-              <span>{new Date(urlDetails.createdOn).toString()}</span>
+              <span>{urlDetails.createdOn}</span>
             </div>
           </CardContent>
         </Card>

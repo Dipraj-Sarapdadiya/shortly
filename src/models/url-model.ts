@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from 'moment';
 
 const ClickSchema = new mongoose.Schema({
   createdOn: { type: String },
@@ -59,12 +60,12 @@ const UrlModel = new mongoose.Schema({
     default: "ACTIVE",
   },
   createdOn: {
-    type: Date,
-    default: new Date(),
+    type: String,
+    default: moment().toDate(),
   },
   updatedOn: {
-    type: Date,
-    default: new Date(),
+    type: String,
+    default: moment().toDate(),
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

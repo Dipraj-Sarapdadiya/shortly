@@ -72,6 +72,6 @@ export interface IUrlDetails {
   title: string;
   clicks: IUserAgentInfo[];
   status: string;
-  createdOn: Date;
+  createdOn: string;
   createdBy: IUserDetails;
 }
