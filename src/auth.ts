@@ -70,6 +70,17 @@ export const authOptions: NextAuthConfig = {
   pages: {
     signIn: "/sign-in",
   },
+  cookies: {
+    sessionToken: {
+      name: "sns_token",
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+      },
+    },
+  },
 };
 
 export default NextAuth(authOptions);
