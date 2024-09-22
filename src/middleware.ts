@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export const middleware = (request: NextRequest) => {
-  const cookie = request.cookies.get("sns_token" || "__Secure-sns_token");
+  const cookie = request.cookies.get("sns_token");
 
   if (cookie) {
     if (request.nextUrl.pathname.startsWith("/sign")) {
