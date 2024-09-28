@@ -12,13 +12,13 @@ const Navbar = () => {
       <nav className="hidden lg:flex justify-between items-center">
         <div className="flex justify-start items-end gap-8">
           <div>
-            <span className="sr-only">Shortly App Name</span>
-            <h1 className="text-4xl font-bold">Shortly</h1>
+            <span className="sr-only">ShortnShare - App Name</span>
+            <h1 className="text-4xl font-bold">ShortnShare</h1>
           </div>
           <div className="flex gap-5 text-xl font-semibold">
             <Link href="/">Home</Link>
-            <Link href="/features">Features</Link>
-            <Link href="/about-us">About Us</Link>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/sign-up">Sign up</Link>
           </div>
         </div>
         <div>
@@ -46,8 +46,8 @@ const Navbar = () => {
               <div className="flex justify-between h-full items-center flex-col gap-5 text-xl font-semibold pt-8">
                 <div className="flex justify-center flex-col gap-5 text-xl font-semibold">
                   <Link href="/">Home</Link>
-                  <Link href="/features">Features</Link>
-                  <Link href="/about-us">About Us</Link>
+                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/sign-up">Sign up</Link>
                 </div>
                 <div className="flex space-x-8">
                   <Link href="https://github.com/Dipraj-Sarapdadiya" target="_blank">

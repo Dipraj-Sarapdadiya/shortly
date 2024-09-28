@@ -1,21 +1,23 @@
 import React from "react";
 import { UrlForm } from "../url-form";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 
 const LinkSection = () => {
   return (
-    <div className="w-full h-auto bg-primary-foreground/5 px-4 lg:px-8 py-4 rounded-md">
-      <span className="sr-only">Link section</span>
-      <div className="font-semibold text-primary-foreground">
-        <h2 className="text-2xl">Shorten a long link</h2>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-2xl font-medium">Shorten a long link</CardTitle>
+      </CardHeader>
+      <CardContent>
         <div className="py-5">
           <h4 className="text-lg pb-1">Past long URL here</h4>
-          <UrlForm formToggle={false} />
-        </div>
+          <UrlForm formToggle={false} />{" "}
+        </div>{" "}
         <div className="flex justify-center items-center">
-          <h4 className="text-lg">*No credit card required. </h4>
+          <h4 className="text-lg">*No credit card required. </h4>{" "}
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

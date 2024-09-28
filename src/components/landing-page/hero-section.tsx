@@ -28,11 +28,11 @@ const HeroSection = () => {
         </div>
         <div className="mt-12 mb-16 flex flex-col items-center justify-center">
           <div className="flex items-center justify-around w-[300px]">
-            <div className="relative w-[25px] h-[45px] border-4 border-primary-foreground/40 rounded-[60px]">
-              <div className="absolute top-[5px] left-1/2 transform -translate-x-1/2 w-[6px] h-[6px] bg-primary-foreground/40 rounded-full opacity-100 animate-wheel"></div>
+            <div className="relative w-[25px] h-[45px] border-2 rounded-[60px]">
+              <div className="absolute top-[5px] left-1/2 transform -translate-x-1/2 w-[6px] h-[6px] dark:bg-muted bg-gray-300 rounded-full opacity-100 animate-wheel"></div>
             </div>
           </div>
-          <p className="flex justify-center text-sm text-primary-foreground/40 font-semibold pt-2">Scroll Down</p>
+          <p className="flex justify-center text-sm text-card-foreground/40 font-semibold pt-2">Scroll Down</p>
         </div>
       </section>
       {/* Mobile screen hero section */}

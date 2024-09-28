@@ -9,6 +9,14 @@ const UserModel = new Schema({
     type: String,
     require: [true, "Please provide email"],
   },
+  firstName: {
+    type: String,
+    require: [true, "Please provide first name"],
+  },
+  lastName: {
+    type: String,
+    require: [true, "Please provide last name"],
+  },
   password: {
     type: String,
     require: [true, "Please provide password"],
@@ -17,6 +25,12 @@ const UserModel = new Schema({
     type: Boolean,
     default: false,
   },
+  urls: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "urls",
+    },
+  ],
   forgotPasswordToken: String,
   verifyToken: String,
   verifyTokenExpiry: Date,
