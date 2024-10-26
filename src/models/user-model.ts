@@ -32,8 +32,8 @@ const UserModel = new Schema({
     },
   ],
   forgotPasswordToken: String,
-  verifyToken: String,
-  verifyTokenExpiry: Date,
+  verifyToken: Number,
+  verifyTokenExpiry: String,
   forgotPasswordTokenExpiry: Date,
 });
 

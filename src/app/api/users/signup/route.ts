@@ -2,6 +2,7 @@ import { initMongo } from "@/models/index";
 import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/models/user-model";
 import bcrypt from "bcryptjs";
+import { sendWelcomeEmail } from "@/lib/resend";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -27,7 +28,16 @@ export const POST = async (req: NextRequest) => {
 
     await newUser.save();
 
-    return NextResponse.json({ message: "Created user successfully!" }, { status: 201 });
+    const userName = `${firstName} ${lastName}`;
+    await sendWelcomeEmail(email, userName);
+    const response = NextResponse.json({ message: "Created user successfully!" }, { status: 201 });
+    response.cookies.set("sns_user_email", email, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60,
+      path: "/",
+    });
+    return response;
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
