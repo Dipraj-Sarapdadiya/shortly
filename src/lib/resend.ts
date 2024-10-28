@@ -1,6 +1,5 @@
-import { getWelcomeEmailTemplate, getOtpVerificationTemplate } from "@/templates/emailTemplates";
+import { getWelcomeEmailTemplate, getOtpVerificationTemplate, getPassResetTemplate } from "@/templates/emailTemplates";
 import { Resend } from "resend";
-
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY);
 
@@ -33,5 +32,21 @@ export const sendOtpForEmailVerification = async (email: string, userName: strin
     if (error) console.log("Error while sending otp mail: ", error);
   } catch (error) {
     console.log("Error while sending resend mail: ", error);
+  }
+};
+
+export const sendOtpEmailForPassReset = async (email: string, userName: string, otp: number) => {
+  console.log("email where resend sends otp: ", email, otp);
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Shortnshare <onboarding@resend.dev>",
+      to: ["diprajsarapdadiya@gmail.com"],
+      subject: "Your OTP for Password Reset at Shortnshare",
+      html: getPassResetTemplate(userName, otp),
+    });
+    console.log("data return from resend for pass reset otp email: ", data);
+    if (error) console.log("Error while sending pass reset otp mail: ", error);
+  } catch (error) {
+    console.log("Error while sending resend mail for pass reset: ", error);
   }
 };

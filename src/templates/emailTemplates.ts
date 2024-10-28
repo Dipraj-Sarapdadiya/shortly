@@ -199,3 +199,100 @@ export const getOtpVerificationTemplate = (userName: string, otp: number) => {
 </html>
 `;
 };
+export const getPassResetTemplate = (userName: string, otp: number) => {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        background-color: #ff9f1c;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .content {
+        padding: 20px;
+        text-align: left;
+      }
+
+      .content h2 {
+        color: #333;
+        font-size: 20px;
+      }
+
+      .content p {
+        color: #666;
+        line-height: 1.5;
+      }
+
+      .otp {
+        font-size: 24px;
+        color: #ff9f1c;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .footer {
+        text-align: center;
+        color: #999;
+        font-size: 12px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Password Reset Verification</h1>
+      </div>
+      <div class="content">
+        <h2>Hello, ${userName}!</h2>
+        <p>
+          We received a request to reset the password associated with your
+          account. To proceed with the reset, please enter the following
+          One-Time Password (OTP) on the password reset page:
+        </p>
+        <div class="otp">${otp}</div>
+        <p>
+          This OTP is valid for the next 60 minutes. If you didn’t request a
+          password reset, please ignore this email or contact support.
+        </p>
+      </div>
+      <div class="footer">
+        <p>© 2024 Shortnshare. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
+`;
+};
