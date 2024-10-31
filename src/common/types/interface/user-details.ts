@@ -12,3 +12,9 @@ export interface ISessionUserDetails {
   id: string;
   email: string;
 }
+
+export interface IProfileDetails {
+  email: string;
+  firstName?: string,
+  lastName?: string,
+}

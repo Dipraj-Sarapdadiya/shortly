@@ -27,4 +27,10 @@ export const navItems: NavItem[] = [
     icon: "qrCode",
     label: "qr-code",
   },
+  {
+    title: "Profile",
+    href: "/dashboard/profile",
+    icon: "user",
+    label: "user",
+  },
 ];

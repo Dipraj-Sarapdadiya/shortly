@@ -6,6 +6,7 @@ import { sendOtpForEmailVerification, sendOtpEmailForPassReset } from "@/lib/res
 import moment from "moment";
 import { FORMAT } from "@/common/types/enums/urlDetails";
 import bcrypt from "bcryptjs";
+import { IProfileDetails } from "@/common/types/interface/user-details";
 
 export const getUserDetailByEmail = async (email: string) => {
   try {
@@ -20,6 +21,55 @@ export const getUserDetailByEmail = async (email: string) => {
   } catch (error) {
     console.error("Failed to get the user details from db: ", error);
     throw error;
+  }
+};
+
+export const getUserProfileByEmail = async (email: string) => {
+  try {
+    await initMongo();
+
+    const userDetail = await UserModel.findOne({ email: email });
+
+    if (!userDetail) {
+      return {
+        status: 404,
+        message: "Failed",
+        error: "User not found!",
+      };
+    }
+
+    return {
+      status: 200,
+      message: "Success",
+      user: JSON.stringify(userDetail),
+    };
+  } catch (error) {
+    console.error("Failed to get the user details from db: ", error);
+    return {
+      status: 500,
+      message: "Failed",
+      error: "Internal server error, kindly check logs to know more",
+    };
+  }
+};
+
+export const updateUserProfile = async (updatedProfile: IProfileDetails) => {
+  try {
+    await initMongo();
+
+    await UserModel.updateOne({ email: updatedProfile.email }, updatedProfile);
+
+    return {
+      status: 200,
+      message: "Success",
+    };
+  } catch (error) {
+    console.error("Failed to get the user details from db: ", error);
+    return {
+      status: 500,
+      message: "Failed",
+      error: "Internal server error, kindly check logs to know more",
+    };
   }
 };
 
